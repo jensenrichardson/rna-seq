@@ -1,7 +1,7 @@
-#!/bin/bash
+#/bin/bash
 
 # make directories
-./makedir.sh
+./scripts/makedir.sh
 
 # location of fastq files
 flocation=$1
@@ -23,8 +23,10 @@ do
 	sampleloc=$(ls $flocation/$name*)
 	#I would have wanted to send name as an argument, but because merge iterates through them, it would be too difficult to look for. It's far easier and more reliable to set it as an env variable in this case.
 	export name=$name
-	./mergefastq.sh $sampleloc
+	echo $name
+	./scripts/mergefastq.sh $sampleloc
 done
+exit 0
 
 if [ $? -ne 0 ]
 then
@@ -34,7 +36,7 @@ fi
 
 for name in $names
 do
-	./preprocessbam.sh ./04.5-mergedlanes/$name.merged.bam $name
+	./scripts/preprocessbam.sh ./04.5-mergedlanes/$name.merged.bam $name
 done
 
 if [ $? -ne 0 ]
