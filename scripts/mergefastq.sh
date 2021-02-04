@@ -51,21 +51,16 @@ do
 done
 listOfFiles="${s1r1},${s2r1} ${s1r2},${s2r2}"
 
-echo -e "STAR \
-	--runThreadN 20 \
-	--genomeDir ${starGenome} \
-	--readFilesIn ${listOfFiles} \
-	--outSAMattrRGline ${readgroups} \
-	--outSAMtype BAM Unsorted \
-	--twopassMode Basic \
-	--outFileNamePrefix ./02-mapping/${name}"
-
-exit 0 
-set -- $lanes
-sample=$name
-
-if [ ! -f ./05-markduplicates/$sample.markdup.bam ]; then
-echo "./req-files/gatk/gatk MarkDuplicatesSpark -I ./04.5-sortedlanes/${sample}_$1.sorted.bam -I ./04.5-sortedlanes/${sample}_$2.sorted.bam -M ./05-markduplicates/$sample.markdup.metrics.txt -O ./05-markduplicates/$sample.markdup.bam 1>&2 2>./05-markduplicates/$sample.markdup.gatk.log" >> "05-markdup.commands"
+if [ ! -d "./02-mapping/${name}" ]; then
+	mkdir "./02-mapping/${name}/"
+	echo -e "STAR \
+		--runThreadN 20 \
+		--genomeDir ${starGenome} \
+		--readFilesIn ${listOfFiles} \
+		--outSAMattrRGline ${readgroups} \
+		--outSAMtype BAM Unsorted \
+		--twopassMode Basic \
+		--outFileNamePrefix ./02-mapping/${name}/${name}" >> 02-mapping.commands
 fi
 
 unset lanes
