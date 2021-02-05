@@ -1,0 +1,3 @@
+include: "rules/ParseSamples.smk"
+rule all: 
+	input: "config/samples.tsv"
