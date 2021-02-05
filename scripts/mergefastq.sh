@@ -49,7 +49,13 @@ do
 		readgroups="${readgroups} , ID: rg.${name}_${lane}"
 	fi
 done
-listOfFiles="${s1r1},${s2r1} ${s1r2},${s2r2}"
+# if empty, then use case for only one lane
+if [ -z "$s2r1" ]; then
+	echo "${name} has only one lane."
+	listOfFiles="${s1r1} ${s1r2}"
+else
+	listOfFiles="${s1r1},${s2r1} ${s1r2},${s2r2}"
+fi
 
 if [ ! -d "./02-mapping/${name}" ]; then
 	mkdir "./02-mapping/${name}/"
@@ -60,7 +66,7 @@ if [ ! -d "./02-mapping/${name}" ]; then
 		--outSAMattrRGline ${readgroups} \
 		--outSAMtype BAM Unsorted \
 		--twopassMode Basic \
-		--outFileNamePrefix ./02-mapping/${name}/${name}" >> 02-mapping.commands
+		--outFileNamePrefix ./02-mapping/${name}/${name} 1>&2 2>./02-mapping/${name}.log" >> 02-mapping.commands
 fi
 
 unset lanes
