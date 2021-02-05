@@ -1,3 +1,7 @@
+configfile: "config/config.yaml"
+
 include: "rules/ParseSamples.smk"
+include: "rules/Star.smk"
+
 rule all: 
-	input: "config/samples.tsv"
+	input: "02-mapping.commands"
