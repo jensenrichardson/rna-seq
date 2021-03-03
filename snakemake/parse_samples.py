@@ -132,6 +132,7 @@ def get_samples(fastq_files):
 # Establishes readgroups
 def get_readgroups(samples, fastq_files, fastq_dir, verb):
     #Iterates through samples
+    final_samples = []
     for sample in samples:
         # each sample must have at least one R1 and R2 file to be valid
         match_r1 = re.compile(f"^{sample.name}.+?(?=R1)")
@@ -140,7 +141,7 @@ def get_readgroups(samples, fastq_files, fastq_dir, verb):
         # for both R1 and R2 for the sample
         readgroups = [match_r1.match(file).group(0) for file in fastq_files if match_r1.match(file) and any(match_r2.match(file) for file in fastq_files)]
         # Makes sure that there were some readgroups found for each sample
-        if not readgroups:
+        if not readgroups and verb > 0:
             print(f"{sample.name} has no readgroups. {readgroups}")
         for rg in readgroups:
             # Ensures that each readgroup has 2 reads files
@@ -163,7 +164,9 @@ def get_readgroups(samples, fastq_files, fastq_dir, verb):
                 final_rg.r2 = r2[0]
                 # Adds the readgroup to the sample's list
                 sample.addReadgroup(final_rg)
-    return samples
+        if len(sample.readgroups) != 0:
+            final_samples.append(sample)
+    return final_samples
 
 def getCommand(sample):
     if len(sample.readgroups) == 1:
