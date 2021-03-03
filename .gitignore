@@ -3,3 +3,4 @@ star-ref/*
 [0-9][0-9]*
 \.snakemake
 quality/
+samples.config
