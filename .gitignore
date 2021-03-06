@@ -6,3 +6,4 @@ quality/
 samples.config
 *~
 test-fastq/
+samples.tsv

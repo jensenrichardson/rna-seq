@@ -12,6 +12,7 @@ import re
 import yaml
 # for arguments
 import argparse
+import pandas as pd
 
 import glob
 
@@ -115,7 +116,7 @@ def main(args):
     else:
         directory = directory.parent
     print_yaml(sample_dict, directory)
-    print(f'Formed {directory}/samples.config of {len(samples)} samples.')
+    print(f'Formed {directory}/samples.tsv of {len(samples)} samples.')
 
 
 def get_samples(fastq_files):
@@ -195,12 +196,15 @@ def constructDict(samples):
     for s in samples:
         rgs = [rg.rg for rg in s.readgroups]
         dict[s.name] = [s.name, rgs, s.command]
-    return {"samples": dict}
+    return dict
 
 
 def print_yaml(sample_d, directory):
-    with open(f'{directory}/samples.config', 'w') as f:
-        data = yaml.dump(sample_d, f)
+    #with open(f'{directory}/samples.config', 'w') as f:
+    #    data = yaml.dump(sample_d, f)
+    data = pd.DataFrame.from_dict(sample_d, orient='index', columns=['sample_name', 'files', 'command'])
+    data.to_csv(f'{directory}/samples.tsv', sep='\t', index=False)
+
 
 
 if __name__ == "__main__":
