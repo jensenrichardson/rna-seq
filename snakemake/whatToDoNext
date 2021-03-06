@@ -1,8 +1,0 @@
-Next I want to modify the two scripts in this directory
-so that the parse samples one outputs two things
- 1) a list of all of the samples in a tsv so that things
-    are easy to read for like R and stuff
- 2) a yaml file that can be used as a config file for
-    Snakemake with the --readfilesin {files} and 
-    {readgroup} information so that I can scatter
-    accross nodes on TACC

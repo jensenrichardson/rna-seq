@@ -117,6 +117,7 @@ def main(args):
     print_yaml(sample_dict, directory)
     print(f'Formed {directory}/samples.config of {len(samples)} samples.')
 
+
 def get_samples(fastq_files):
     # Establishes list of samples
     samples = []
@@ -194,7 +195,7 @@ def constructDict(samples):
     for s in samples:
         rgs = [rg.rg for rg in s.readgroups]
         dict[s.name] = [s.name, rgs, s.command]
-    return dict
+    return {"samples": dict}
 
 
 def print_yaml(sample_d, directory):

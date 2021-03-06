@@ -1,6 +1,5 @@
 configfile: "config/config.yaml"
 
-include: "rules/ParseSamples.smk"
 include: "rules/Star.smk"
 
 rule all: 

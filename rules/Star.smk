@@ -7,4 +7,4 @@ rule STAR_Map:
 		config["star_genome"]
 	output: "02-mapping.commands"
 	script:
-		"../scripts/star_map.py"
+		"../bash-scripts/star_map.py"
