@@ -8,6 +8,7 @@ wildcard_constraints:
 rule STAR_Map:
     input:
         lambda wildcards: samples.loc[wildcards.sample, "files"]
+        genome=config["star_genome"]
     params:
         command=lambda wildcards: samples.loc[wildcards.sample, "command"]
     output:
@@ -16,7 +17,8 @@ rule STAR_Map:
     shell:
         "STAR "
         "--runThreadN {threads} " 
+        "--genomeDir {input.genome} "
         "{params.command} " 
         "--outSAMtype BAM Unsorted " 
-        "--twopassMode Basic " 
+        "--twopassMode Basic "
         "--outFileNamePrefix ./02-mapping/${wildcards.sample}/${wildcards.sample}"
