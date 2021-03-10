@@ -7,4 +7,4 @@ samples = pd.read_table(config["samples_tsv"], converters={"files": ast.literal_
 include: "rules/Star.smk"
 
 rule all:
-	input: expand("02-mapping/{sample}.bam", sample=samples.to_dict('index'))
+	input: expand("02-mapping/{sample}/{sample}.Aligned.out.bam", sample=samples.to_dict('index'))

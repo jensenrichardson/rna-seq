@@ -7,18 +7,30 @@ wildcard_constraints:
 
 rule STAR_Map:
     input:
-        lambda wildcards: samples.loc[wildcards.sample, "files"]
+        lambda wildcards: samples.loc[wildcards.sample, "files"],
         genome=config["star_genome"]
     params:
         command=lambda wildcards: samples.loc[wildcards.sample, "command"]
     output:
-        bam="02-mapping/{sample}.bam"
-    threads: workflow.cores 0.8
+        bam="02-mapping/{sample}/{sample}.Aligned.out.bam"
+    log:
+        "02-mapping/{sample}/{sample}.Log.final.out",
+        "02-mapping/{sample}/{sample}.Log.out",
+        "02-mapping/{sample}/{sample}.Log.progress.out",
+        "02-mapping/{sample}/{sample}.SJ.out.tab",
+        "02-mapping/{sample}/{sample}._STARgenome/sjdbInfo.txt",
+        "02-mapping/{sample}/{sample}._STARgenome/sjdbList.out.tab",
+        "02-mapping/{sample}/{sample}._STARpass1/Log.final.out",
+        "02-mapping/{sample}/{sample}._STARpass1/SJ.out.tab",
+    resources:
+        runtime=10,
+	cores=48,
+	mem_mb=63000
     shell:
         "STAR "
-        "--runThreadN {threads} " 
+        "--runThreadN {resources.cores} " 
         "--genomeDir {input.genome} "
         "{params.command} " 
         "--outSAMtype BAM Unsorted " 
         "--twopassMode Basic "
-        "--outFileNamePrefix ./02-mapping/${wildcards.sample}/${wildcards.sample}"
+        "--outFileNamePrefix ./02-mapping/{wildcards.sample}/{wildcards.sample}. &> /dev/null"

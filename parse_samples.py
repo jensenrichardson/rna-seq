@@ -179,7 +179,7 @@ def get_readgroups(samples, fastq_files, fastq_dir, verb):
 
 def getCommand(sample):
     if len(sample.readgroups) == 1:
-        return f'--readFilesIn {sample.readgroups[0].r1} {sample.readgroups[0].r2} --outSAMattrRGline {sample.readgroups[0].rg}'
+        return f'--readFilesIn {sample.readgroups[0].r1} {sample.readgroups[0].r2} --outSAMattrRGline ID: {sample.readgroups[0].rg}'
     elif len(sample.readgroups) > 1:
         r1s = []
         r2s = []
