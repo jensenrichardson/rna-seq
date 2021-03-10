@@ -6,7 +6,7 @@ rule MarkDuplicates:
     log:
         "03-markdup/{sample}.log"
     resources:
-        cores: 16
+        cores=16
     shell:
         "gatk MarkDuplicatesSpark "
         "-I {input} "
