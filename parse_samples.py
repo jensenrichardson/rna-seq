@@ -194,7 +194,7 @@ def getCommand(sample):
 def constructDict(samples):
     dict = {}
     for s in samples:
-        rgs = [rg.rg for rg in s.readgroups]
+        rgs = [rg.r1 for rg in s.readgroups] + [rg.r2 for rg in s.readgroups]
         dict[s.name] = [s.name, rgs, s.command]
     return dict
 

@@ -1,10 +1,21 @@
-configfile: "config/config.yaml"
+import pandas as pd
+import ast
+configfile: "config.yaml"
+samples = pd.read_table(config["samples_tsv"], converters={"files": ast.literal_eval}).set_index("sample_name", drop=False)
+wildcard_constraints:
+    sample ="|".join(samples.index.tolist())
 
 rule STAR_Map:
-	input:
-		config["samples_tsv"],
-		config["fastq_dir"],
-		config["star_genome"]
-	output: "02-mapping.commands"
-	script:
-		"../bash-scripts/star_map.py"
+    input:
+        lambda wildcards: samples.loc[wildcards.sample, "files"]
+    params:
+        command=lambda wildcards: samples.loc[wildcards.sample, "command"]
+    output:
+        bam="02-mapping/{sample}.bam"
+    shell:
+        "echo STAR "
+        "--runThreadN 20 " 
+        "{params.command} " 
+        "--outSAMtype BAM Unsorted " 
+        "--twopassMode Basic " 
+        "--outFileNamePrefix ./02-mapping/${wildcards.sample}/${wildcards.sample} 1>&2 2>./02-mapping/${wildcards.sample}.log >> 02-mapping.commands"

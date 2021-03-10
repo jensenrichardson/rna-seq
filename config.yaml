@@ -1,6 +1,6 @@
 # This file should contain everything to configure the workflow on a global scale.
 # In case of sample based data, it should be complemented by a samples.tsv file that contains
 # one row per sample. It can be parsed easily via pandas.
-samples_config: "/Users/jensenrichardson/PycharmProjects/rna-seq/samples.config"
+samples_tsv: "/Users/jensenrichardson/PycharmProjects/rna-seq/samples.tsv"
 fastq_dir: "/Users/jensenrichardson/PycharmProjects/rna-seq/test-fastq/"
 star_genome: "/scratch/07467/jwr2735/rna-seq/star-ref/"
