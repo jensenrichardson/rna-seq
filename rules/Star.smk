@@ -12,10 +12,11 @@ rule STAR_Map:
         command=lambda wildcards: samples.loc[wildcards.sample, "command"]
     output:
         bam="02-mapping/{sample}.bam"
+    threads: workflow.cores 0.8
     shell:
-        "echo STAR "
-        "--runThreadN 20 " 
+        "STAR "
+        "--runThreadN {threads} " 
         "{params.command} " 
         "--outSAMtype BAM Unsorted " 
         "--twopassMode Basic " 
-        "--outFileNamePrefix ./02-mapping/${wildcards.sample}/${wildcards.sample} 1>&2 2>./02-mapping/${wildcards.sample}.log >> 02-mapping.commands"
+        "--outFileNamePrefix ./02-mapping/${wildcards.sample}/${wildcards.sample}"
