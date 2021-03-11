@@ -179,7 +179,7 @@ def get_readgroups(samples, fastq_files, fastq_dir, verb):
 
 def getCommand(sample):
     if len(sample.readgroups) == 1:
-        return f'--readFilesIn {sample.readgroups[0].r1} {sample.readgroups[0].r2} --outSAMattrRGline ID: {sample.readgroups[0].rg}'
+        return f'--readFilesIn {sample.readgroups[0].r1} {sample.readgroups[0].r2} --outSAMattrRGline ID:{sample.readgroups[0].rg}'
     elif len(sample.readgroups) > 1:
         r1s = []
         r2s = []
@@ -188,7 +188,7 @@ def getCommand(sample):
             r1s.append(readg.r1)
             r2s.append(readg.r2)
             rgs.append(readg.rg)
-        return f'--readFilesIn {",".join(r1s)} {",".join(r2s)} --outSAMattrRGline ID: {" , ID: ".join(rgs)}'
+        return f'--readFilesIn {",".join(r1s)} {",".join(r2s)} --outSAMattrRGline ID:{" , ID:".join(rgs)}'
 
 
 def constructDict(samples):
