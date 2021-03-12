@@ -23,7 +23,7 @@ rule STAR_Map:
         "02-mapping/{sample}/{sample}._STARpass1/Log.final.out",
         "02-mapping/{sample}/{sample}._STARpass1/SJ.out.tab",
     resources:
-        runtime=10,
+        runtime=140,
 	cores=48,
 	mem_mb=63000
     shell:
