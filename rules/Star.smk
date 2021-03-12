@@ -21,13 +21,10 @@ rule STAR_Map:
         sji="02-mapping/{sample}/{sample}._STARgenome/sjdbInfo.txt",
         sjl="02-mapping/{sample}/{sample}._STARgenome/sjdbList.out.tab",
         pass1="02-mapping/{sample}/{sample}._STARpass1/Log.final.out",
-        pass1s="02-mapping/{sample}/{sample}._STARpass1/SJ.out.tab",
-        sout="02-mapping/{sample}/{sample}.slurm.o",
-        serr="02-mapping/{sample}/{sample}.slurm.e"
+        pass1s="02-mapping/{sample}/{sample}._STARpass1/SJ.out.tab"
     resources:
         runtime=140,
-	cores=48,
-	mem_mb=63000
+	cores=48
     shell:
         "STAR "
         "--runThreadN {resources.cores} " 
