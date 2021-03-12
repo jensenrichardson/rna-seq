@@ -14,14 +14,16 @@ rule STAR_Map:
     output:
         bam="02-mapping/{sample}/{sample}.Aligned.out.bam"
     log:
-        "02-mapping/{sample}/{sample}.Log.final.out",
-        "02-mapping/{sample}/{sample}.Log.out",
-        "02-mapping/{sample}/{sample}.Log.progress.out",
-        "02-mapping/{sample}/{sample}.SJ.out.tab",
-        "02-mapping/{sample}/{sample}._STARgenome/sjdbInfo.txt",
-        "02-mapping/{sample}/{sample}._STARgenome/sjdbList.out.tab",
-        "02-mapping/{sample}/{sample}._STARpass1/Log.final.out",
-        "02-mapping/{sample}/{sample}._STARpass1/SJ.out.tab",
+        fin="02-mapping/{sample}/{sample}.Log.final.out",
+        full="02-mapping/{sample}/{sample}.Log.out",
+        prog="02-mapping/{sample}/{sample}.Log.progress.out",
+        sjo="02-mapping/{sample}/{sample}.SJ.out.tab",
+        sji="02-mapping/{sample}/{sample}._STARgenome/sjdbInfo.txt",
+        sjl="02-mapping/{sample}/{sample}._STARgenome/sjdbList.out.tab",
+        pass1="02-mapping/{sample}/{sample}._STARpass1/Log.final.out",
+        pass1s="02-mapping/{sample}/{sample}._STARpass1/SJ.out.tab",
+        sout="02-mapping/{sample}/{sample}.slurm.o",
+        serr="02-mapping/{sample}/{sample}.slurm.e"
     resources:
         runtime=140,
 	cores=48,
