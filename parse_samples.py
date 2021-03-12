@@ -8,8 +8,6 @@ import os
 from pathlib import Path
 # for regex
 import re
-# for yaml
-import yaml
 # for arguments
 import argparse
 import pandas as pd
@@ -84,11 +82,18 @@ def dir_path(string):
 
 
 def main(args):
+    verb = args.verbose
     directory = args.fastq_dir
     directory = Path(directory).resolve()
-    verb = args.verbose
-    # gets list of fastq files
     fastq_files = [f for f in listdir(directory) if isfile(join(directory, f))]
+    samples = []
+    if not args.input_samples:
+        samples = get_samples(fastq_files)
+    elif args.input_samples:
+        samples_df = pd.read_table(args.input_samples)
+        samples_list = samples_df[samples_df.columns[0]]
+        samples = [Sample(sample) for sample in samples_list]
+    # gets list of fastq files
     # sets up samples with the format:
     # Sample(
     #   Name: str
@@ -98,7 +103,6 @@ def main(args):
     #           r1: str
     #           r2: str
     # )])
-    samples = get_samples(fastq_files)
     samples = get_readgroups(samples, fastq_files, directory, verb)
     if verb > 1:
         for s in samples:
@@ -106,17 +110,19 @@ def main(args):
     if verb > 0:
         for s in samples:
             print(f'{s.name} has {len(s.readgroups)} readgroups')
-    for s in samples:
-        s.command = getCommand(s)
+    if args.star:
+        for s in samples:
+            s.command = getCommand(s)
     # Constructs a dictionary with the following format:
     # "sample": ["sample name", ["rg1"...], "star command"]
-    sample_dict = constructDict(samples)
-    if args.output_dir:
-        directory = args.output_dir
+    sample_dict = constructDict(samples, args.star)
+    if args.output:
+        tsv_file = args.output
     else:
         directory = directory.parent
-    print_yaml(sample_dict, directory)
-    print(f'Formed {directory}/samples.tsv of {len(samples)} samples.')
+        tsv_file = os.path.join(directory, "samples.tsv")
+    print_tsv(sample_dict, tsv_file, args.star)
+    print(f'Formed {tsv_file}/samples.tsv of {len(samples)} samples.')
 
 
 def get_samples(fastq_files):
@@ -179,7 +185,8 @@ def get_readgroups(samples, fastq_files, fastq_dir, verb):
 
 def getCommand(sample):
     if len(sample.readgroups) == 1:
-        return f'--readFilesIn {sample.readgroups[0].r1} {sample.readgroups[0].r2} --outSAMattributes All --outSAMattrRGline ID:{sample.readgroups[0].rg} PL:ILLUMINA SM:{sample.name} '
+        return f'--readFilesIn {sample.readgroups[0].r1} {sample.readgroups[0].r2} --outSAMattributes All ' \
+               f'--outSAMattrRGline ID:{sample.readgroups[0].rg} PL:ILLUMINA SM:{sample.name} '
     elif len(sample.readgroups) > 1:
         r1s = []
         r2s = []
@@ -194,29 +201,36 @@ def getCommand(sample):
         return f'--readFilesIn {",".join(r1s)} {",".join(r2s)} {samattr}'
 
 
-def constructDict(samples):
-    dict = {}
+def constructDict(samples, star):
+    sample_dict = {}
     for s in samples:
         rgs = [rg.r1 for rg in s.readgroups] + [rg.r2 for rg in s.readgroups]
-        dict[s.name] = [s.name, rgs, s.command]
-    return dict
+        if star:
+            sample_dict[s.name] = [s.name, rgs, s.command]
+        else:
+            sample_dict[s.name] = [s.name, rgs]
+    return sample_dict
 
 
-def print_yaml(sample_d, directory):
-    #with open(f'{directory}/samples.config', 'w') as f:
-    #    data = yaml.dump(sample_d, f)
-    data = pd.DataFrame.from_dict(sample_d, orient='index', columns=['sample_name', 'files', 'command'])
-    data.to_csv(f'{directory}/samples.tsv', sep='\t', index=False)
+def print_tsv(sample_d, tsv_file, star):
+    if star:
+        data = pd.DataFrame.from_dict(sample_d, orient='index', columns=['sample_name', 'files', 'command'])
+    else:
+        data = pd.DataFrame.from_dict(sample_d, orient='index', columns=['sample_name', 'files'])
+    data.to_csv(tsv_file, sep='\t', index=False)
 
 
 
 if __name__ == "__main__":
     # Parses arugments
     # Only argument is for the directory
-    parser = argparse.ArgumentParser(description="Create sample yaml for RNAseq mapping with STAR")
-    parser.add_argument("fastq_dir", type=dir_path, help="Dirctory containing fastq files")
-    parser.add_argument("-o", "--output-dir", type=str, help="Name of output directory")
+    parser = argparse.ArgumentParser(description="Create sample tsv for RNAseq mapping with STAR")
+    parser.add_argument("fastq_dir", type=dir_path, help="Directory containing fastq files")
+    parser.add_argument("-o", "--output", type=str, help="Name of output tsv")
     parser.add_argument("-v", "--verbose", action="count", default=0, help="Enable debug output")
+    parser.add_argument("-s", "--star", action="store_true", help="Form commands for mapping with STAR.")
+    parser.add_argument("-i", "--input-samples", type=str, help="Provide a tsv of sample names to look for in the "
+                                                                "fastq directory.")
     args = parser.parse_args()
     main(args)
     exit(0)
