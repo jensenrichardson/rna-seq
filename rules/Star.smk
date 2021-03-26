@@ -12,7 +12,7 @@ rule STAR_Map:
     params:
         command=lambda wildcards: samples.loc[wildcards.sample, "command"]
     output:
-        bam="02-mapping/{sample}/{sample}.Aligned.out.bam"
+        bam="02-mapping/{sample}/{sample}.Aligned.sortedByCoord.out.bam"
     log:
         fin="02-mapping/{sample}/{sample}.Log.final.out",
         full="02-mapping/{sample}/{sample}.Log.out",
@@ -23,13 +23,13 @@ rule STAR_Map:
         pass1="02-mapping/{sample}/{sample}._STARpass1/Log.final.out",
         pass1s="02-mapping/{sample}/{sample}._STARpass1/SJ.out.tab"
     resources:
-        runtime=140,
-	cores=48
+        runtime=10,
+	cores=42
     shell:
         "STAR "
         "--runThreadN {resources.cores} " 
         "--genomeDir {input.genome} "
         "{params.command} " 
-        "--outSAMtype BAM Unsorted " 
+        "--outSAMtype BAM SortedByCoordinate " 
         "--twopassMode Basic "
         "--outFileNamePrefix ./02-mapping/{wildcards.sample}/{wildcards.sample}. &> /dev/null"

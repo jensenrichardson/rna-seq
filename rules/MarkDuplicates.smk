@@ -1,17 +1,17 @@
 rule MarkDuplicates:
     input:
-        "02-mapping/{sample}/{sample}.Aligned.out.bam"
+        "02-mapping/{sample}/{sample}.Aligned.sortedByCoord.out.bam"
     output:
         bam="03-markdup/{sample}.markdup.bam",
-        bai="03-markdup/{sample}.markdup.bam.bai",
-        sbi="03-markdup/{sample}.markdup.bam.sbi"
+        metrics="03-markdup/{sample}.metrics"
     log:
         "03-markdup/{sample}.log"
     resources:
         cores=16,
-	runtime=90
+	runtime=25
     shell:
-        "gatk MarkDuplicatesSpark "
+        "gatk MarkDuplicates "
         "-I {input} "
         "-O {output.bam} "
+        "-M {output.metrics} "
         "&> {log}"

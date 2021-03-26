@@ -11,7 +11,7 @@ rule ApplyCalibration:
         "06-ApplyRecalibration/{sample}.log"
     resources:
         cores=16,
-	runtime=60
+	runtime=30
     shell:
         "gatk ApplyBQSR "
         "-R {input.ref} "

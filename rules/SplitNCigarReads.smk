@@ -6,15 +6,14 @@ rule SplitNCigarReads:
         ref=config["ref_gen"]
     output:
         bam="04-SplitCigar/{sample}.splitcigar.bam",
-        bai="04-SplitCigar/{sample}.splitcigar.bam.bai",
-        sbi="04-SplitCigar/{sample}.splitcigar.bam.sbi"
+        bai="04-SplitCigar/{sample}.splitcigar.bai"
     log:
         "04-SplitCigar/{sample}.log"
     resources:
         cores=16,
-	runtime=60
+	runtime=30
     shell:
-        "gatk MarkDuplicatesSpark "
+        "gatk SplitNCigarReads "
         "-R {input.ref} "
         "-I {input.bam} "
         "-O {output.bam} "

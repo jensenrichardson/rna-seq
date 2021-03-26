@@ -12,7 +12,7 @@ rule BaseRecalibration:
         "05-BaseRecalibrator/{sample}.log"
     resources:
         cores=16,
-	runtime=120
+	runtime=10
     shell:
         "gatk BaseRecalibrator "
         "-R {input.ref} "
