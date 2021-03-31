@@ -11,7 +11,7 @@ rule HaplotypeCaller:
         idx="07-HaplotypeCaller/{sample}.hapcall.vcf.idx"
     resources:
         cores=16,
-	runtime=360,
+	runtime=lambda wildcards, attempt: 60 + 60 * (attempt*2 - 2),
     shell:
         'OMP_NUM_THREADS={resources.cores} gatk --java-options "-Xmx8g" HaplotypeCaller '
         "-R {input.ref} "

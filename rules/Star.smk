@@ -23,7 +23,7 @@ rule STAR_Map:
         pass1="02-mapping/{sample}/{sample}._STARpass1/Log.final.out",
         pass1s="02-mapping/{sample}/{sample}._STARpass1/SJ.out.tab"
     resources:
-        runtime=10,
+        runtime=lambda wildcards, attempt:30 + (60 * (attempt - 1)),
 	cores=42
     shell:
         "STAR "

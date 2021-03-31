@@ -8,7 +8,7 @@ rule MarkDuplicates:
         "03-markdup/{sample}.log"
     resources:
         cores=16,
-	runtime=25
+	runtime=lambda wildcards, attempt: 45 * attempt
     shell:
         "gatk MarkDuplicates "
         "-I {input} "

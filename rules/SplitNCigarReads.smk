@@ -11,7 +11,7 @@ rule SplitNCigarReads:
         "04-SplitCigar/{sample}.log"
     resources:
         cores=16,
-	runtime=30
+	runtime=lambda wildcards, attempt: 60 * attempt + 120 * (attempt - 1)
     shell:
         "gatk SplitNCigarReads "
         "-R {input.ref} "
