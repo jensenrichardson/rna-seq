@@ -4,6 +4,8 @@ rule MarkDuplicates:
     output:
         bam="03-markdup/{sample}.markdup.bam",
         metrics="03-markdup/{sample}.metrics"
+    conda:
+        "envs/gatk.yaml"
     log:
         "03-markdup/{sample}.log"
     resources:

@@ -1,6 +1,6 @@
 import pandas as pd
 import ast
-configfile: "config.yaml"
+configfile: "config/config.yaml"
 samples = pd.read_table(config["samples_tsv"], converters={"files": ast.literal_eval}).set_index("sample_name", drop=False)
 wildcard_constraints:
     sample ="|".join(samples.index.tolist())

@@ -7,3 +7,6 @@ samples.config
 *~
 test-fastq/
 samples.tsv
+timings
+monsm.sh
+snakemake\.*

@@ -1,7 +1,7 @@
 # This file should contain everything to configure the workflow on a global scale.
 # In case of sample based data, it should be complemented by a samples.tsv file that contains
 # one row per sample. It can be parsed easily via pandas.
-samples_tsv: "/scratch/07467/jwr2735/rna-seq/samples.tsv"
+samples_tsv: "/scratch/07467/jwr2735/rna-seq/config/samples.tsv"
 fastq_dir: "/scratch/07467/jwr2735/rna-seq/test-fastq/"
 star_genome: "/scratch/07467/jwr2735/rna-seq/star-ref/"
 ref_gen: "/work/07467/jwr2735/lonestar/req-files/refGenome/GRCh38.p7.genome.fa"

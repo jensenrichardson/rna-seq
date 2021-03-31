@@ -1,4 +1,4 @@
-configfile: "config.yaml"
+#configfile: "config.yaml"
 
 rule SplitNCigarReads:
     input:
@@ -7,6 +7,8 @@ rule SplitNCigarReads:
     output:
         bam="04-SplitCigar/{sample}.splitcigar.bam",
         bai="04-SplitCigar/{sample}.splitcigar.bai"
+    conda:
+        "envs/gatk.yaml"
     log:
         "04-SplitCigar/{sample}.log"
     resources:

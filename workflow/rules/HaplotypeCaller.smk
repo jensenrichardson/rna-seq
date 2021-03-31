@@ -1,4 +1,4 @@
-configfile: "config.yaml"
+#configfile: "config.yaml"
 
 rule HaplotypeCaller:
     input:
@@ -9,6 +9,8 @@ rule HaplotypeCaller:
     output:
         vcf="07-HaplotypeCaller/{sample}.hapcall.vcf",
         idx="07-HaplotypeCaller/{sample}.hapcall.vcf.idx"
+    conda:
+        "envs/gatk.yaml"
     resources:
         cores=16,
 	runtime=lambda wildcards, attempt: 60 + 60 * (attempt*2 - 2),

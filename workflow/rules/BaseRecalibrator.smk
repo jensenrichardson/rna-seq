@@ -1,4 +1,4 @@
-configfile: "config.yaml"
+#configfile: "config/config.yaml"
 
 rule BaseRecalibration:
     input:
@@ -8,6 +8,8 @@ rule BaseRecalibration:
         table="05-BaseRecalibrator/{sample}.table",
     params:
         known_sites="--known-sites " + " --known-sites ".join(config["known_sites"])
+    conda:
+        "envs/gatk.yaml"
     log:
         "05-BaseRecalibrator/{sample}.log"
     resources:

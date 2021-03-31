@@ -1,6 +1,6 @@
 import pandas as pd
 import ast
-configfile: "config.yaml"
+#configfile: "config.yaml"
 samples = pd.read_table(config["samples_tsv"], converters={"files": ast.literal_eval}).set_index("sample_name", drop=False)
 wildcard_constraints:
     sample ="|".join(samples.index.tolist())
@@ -13,6 +13,8 @@ rule STAR_Map:
         command=lambda wildcards: samples.loc[wildcards.sample, "command"]
     output:
         bam="02-mapping/{sample}/{sample}.Aligned.sortedByCoord.out.bam"
+    conda:
+        "envs/star.yaml"
     log:
         fin="02-mapping/{sample}/{sample}.Log.final.out",
         full="02-mapping/{sample}/{sample}.Log.out",

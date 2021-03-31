@@ -1,4 +1,4 @@
-configfile: "config.yaml"
+#configfile: "config/config.yaml"
 
 rule ApplyCalibration:
     input:
@@ -8,6 +8,8 @@ rule ApplyCalibration:
     output:
         bam="06-ApplyRecalibration/{sample}.recalibrated.bam",
         bai="06-ApplyRecalibration/{sample}.recalibrated.bai"
+    conda:
+        "envs/gatk.yaml"
     log:
         "06-ApplyRecalibration/{sample}.log"
     resources:
