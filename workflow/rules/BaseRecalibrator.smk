@@ -14,7 +14,7 @@ rule BaseRecalibration:
         "05-BaseRecalibrator/{sample}.log"
     resources:
         cores=16,
-	runtime=lambda wildcards, attempt: 10 * attempt
+	runtime=lambda wildcards, attempt: 10 * attempt + 20 * (attempt - 1)
     shell:
         "gatk BaseRecalibrator "
         "-R {input.ref} "
