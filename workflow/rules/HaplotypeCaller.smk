@@ -2,7 +2,7 @@
 
 rule HaplotypeCaller:
     input:
-        bam="06-ApplyRecalibration/{sample}.recalibrated.bam",
+        bam="06-RnaApplyRecalibration/{sample}.recalibrated.bam",
 	ref=config["ref_gen"],
     log:
         "07-HaplotypeCaller/{sample}.log"
