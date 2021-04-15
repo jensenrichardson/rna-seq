@@ -216,7 +216,7 @@ def getBwaCommand(sample):
 def constructDict(samples, star, bwa):
     sample_dict = {}
     for s in samples:
-        files = [rg.r1 for rg in s.readgroups] + [rg.r2 for rg in s.readgroups]
+        files = [getgroup(rg) for rg in s.readgroups for getgroup in (lambda reg: reg.r1, lambda reg: reg.r2)]
         if star:
             sample_dict[s.name] = [s.name, files, s.command[0]]
         elif bwa:

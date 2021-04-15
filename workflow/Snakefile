@@ -1,15 +1,24 @@
-import pandas as pd
+import pandas as pd 
 import ast
+import os
 configfile: "config/config.yaml"
 samples = pd.read_table(config["samples_tsv"], converters={"files": ast.literal_eval}).set_index("sample_name", drop=False)
 wildcard_constraints:
     sample ="|".join(samples.index.tolist())
 
+fastqfiles = [file for files in samples['files'].tolist() for file in files]
+fastqfiles = [os.path.basename(file) for file in fastqfiles]
+fastqfiles = [os.path.splitext(file)[0] for file in fastqfiles]
+#print(fastqfiles)
+
 rule all:
 	#input: expand("02-mapping/{sample}/{sample}.Aligned.out.bam", sample=samples.to_dict('index'))
 	#input: expand("04-SplitCigar/{sample}.splitcigar.bam", sample=samples.to_dict('index'))
 	#input: expand("06-ApplyRecalibration/{sample}.recalibrated.bam", sample=samples.to_dict('index'))
-	input: expand("07-HaplotypeCaller/{sample}.hapcall.vcf", sample=samples.to_dict('index'))
+	input: expand("07-HaplotypeCaller/{sample}.hapcall.vcf", sample=samples.to_dict('index')),
+		expand("00-FastQC/{fastq}_fastqc.html", fastq=fastqfiles),
+		expand("01-Kallisto/{sample}/abundance_counts_only.tsv", sample=samples.to_dict('index'))
+		
 
 include: "rules/Star.smk"
 include: "rules/MarkDuplicates.smk"
@@ -17,3 +26,6 @@ include: "rules/SplitNCigarReads.smk"
 include: "rules/BaseRecalibrator.smk"
 include: "rules/ApplyRecalibration.smk"
 include: "rules/HaplotypeCaller.smk"
+include: "rules/FastQC.smk"
+include: "rules/Kallisto.smk"
+include: "rules/Kallisto-cut.smk"

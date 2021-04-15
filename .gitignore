@@ -11,3 +11,5 @@ samples.tsv
 timings
 monsm.sh
 snakemake\.*
+nohup.out
+dag*
