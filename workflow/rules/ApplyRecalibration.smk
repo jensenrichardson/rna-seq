@@ -4,7 +4,7 @@ rule ApplyCalibration:
     input:
         bam="04-SplitCigar/{sample}.splitcigar.bam",
         ref=config["ref_gen"],
-        table="05-BaseRecalibrator/{sample}.table"
+        table="05-RnaBaseRecalibrator/{sample}.table"
     output:
         bam="06-ApplyRecalibration/{sample}.recalibrated.bam",
         bai="06-ApplyRecalibration/{sample}.recalibrated.bai"
