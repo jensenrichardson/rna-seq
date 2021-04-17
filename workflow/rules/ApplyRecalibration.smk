@@ -6,7 +6,7 @@ rule ApplyCalibration:
         ref=config["ref_gen"],
         table="05-RnaBaseRecalibrator/{sample}.table"
     output:
-        bam="06-RnaApplyRecalibration/{sample}.recalibrated.bam",
+        bam=protected("06-RnaApplyRecalibration/{sample}.recalibrated.bam"),
         bai="06-RnaApplyRecalibration/{sample}.recalibrated.bai"
     conda:
         "envs/gatk.yaml"

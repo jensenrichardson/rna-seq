@@ -10,8 +10,8 @@ rule FastQC:
     input:
         expand("{fastq_dir}/{{fastq}}.fastq", fastq_dir = os.path.normpath(config['fastq_dir']))
     output:
-        zip="00-FastQC/{fastq}_fastqc.zip",
-        html="00-FastQC/{fastq}_fastqc.html"
+        zip=protected("00-FastQC/{fastq}_fastqc.zip"),
+        html=protected("00-FastQC/{fastq}_fastqc.html")
     conda:
         "envs/star.yaml"
     log:

@@ -5,7 +5,7 @@ rule SplitNCigarReads:
         bam="03-markdup/{sample}.markdup.bam",
         ref=config["ref_gen"]
     output:
-        bam="04-SplitCigar/{sample}.splitcigar.bam",
+        bam=temp("04-SplitCigar/{sample}.splitcigar.bam"),
         bai="04-SplitCigar/{sample}.splitcigar.bai"
     conda:
         "envs/gatk.yaml"

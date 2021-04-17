@@ -12,7 +12,7 @@ rule STAR_Map:
     params:
         command=lambda wildcards: samples.loc[wildcards.sample, "command"]
     output:
-        bam="02-mapping/{sample}/{sample}.Aligned.sortedByCoord.out.bam"
+        bam=temp("02-mapping/{sample}/{sample}.Aligned.sortedByCoord.out.bam")
     conda:
         "envs/star.yaml"
     log:

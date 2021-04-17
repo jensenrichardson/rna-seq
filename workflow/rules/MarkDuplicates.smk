@@ -2,7 +2,7 @@ rule MarkDuplicates:
     input:
         "02-mapping/{sample}/{sample}.Aligned.sortedByCoord.out.bam"
     output:
-        bam="03-markdup/{sample}.markdup.bam",
+        bam=temp("03-markdup/{sample}.markdup.bam"),
         metrics="03-markdup/{sample}.metrics"
     conda:
         "envs/gatk.yaml"

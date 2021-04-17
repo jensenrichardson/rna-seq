@@ -10,7 +10,7 @@ rule Kallisto:
         files=lambda wildcards: samples.loc[wildcards.sample, "files"],
         genome=config["kallisto_index"]
     output:
-        counts="01-Kallisto/{sample}/abundance.tsv"
+        counts=protected("01-Kallisto/{sample}/abundance.tsv")
     conda:
         "envs/star.yaml"
     log:
